@@ -11,7 +11,7 @@ Please feel free to contribute in improving it.
 
 # Installation
 Download and copy comware-router-mode.el into your `~/.emacs.d/lisp`
-direcotry and add the following to your `init.el`.
+directory and add the following to your `init.el`.
 
 ```
 ;; Tell Emacs where is your personal elisp lib directory
@@ -42,4 +42,4 @@ direcotry and add the following to your `init.el`.
 
 # Contribution
 Feel free to open an issue in case of questions or problems.
-Contribution are always welcome.
+Contributions are always welcome.
