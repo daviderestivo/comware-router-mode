@@ -3,14 +3,14 @@ An Emacs major mode for editing Comware routers and switches
 configuration files.
 
 # Introduction
-Taking inspiration from Noufal Ibrahim and his
+Taking inspiration from *Noufal Ibrahim* and his
 [cisco-router-mode](https://www.emacswiki.org/emacs/cisco-router-mode.el),
 I decided to write a major mode for editing Comware routers and
 switches configuration files. This mode is still in alpha version.
 Please feel free to contribute in improving it.
 
 # Installation
-Download and copy comware-router mode into your `~/.emacs.d/lisp`
+Download and copy comware-router-mode.el into your `~/.emacs.d/lisp`
 direcotry and add the following to your `init.el`.
 
 ```
