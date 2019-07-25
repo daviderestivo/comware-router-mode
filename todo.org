@@ -1,3 +1,4 @@
 * TODO Add capability to collapse sections
 Maybe based on `set-selective-display'?
 * TODO Add this comware-router-mode to MELPA once is mature enough
+* TODO Add functions to list VRFs, interfaces, route-policies ...
