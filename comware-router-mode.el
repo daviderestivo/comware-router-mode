@@ -155,6 +155,7 @@
 (modify-syntax-entry ?\r ">" comware-router-mode-syntax-table) ;All linefeeds end comments.
 
 ;; Entry point
+;;;###autoload
 (defun comware-router-mode  ()
   "Major mode for editing Comware routers/switches configuration files"
   (interactive)
