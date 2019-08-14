@@ -4,15 +4,15 @@
 
 ;; Author: Davide Restivo <davide.restivo@yahoo.it>
 ;; Maintainer: Davide Restivo <davide.restivo@yahoo.it>
-;; Version: 0.1
+;; Version: 0.2
 ;; URL: https://github.com/daviderestivo/comware-router-mode
-;; Package-Requires: ((emacs "24.3"))
+;; Package-Requires: ((emacs "24.3") (button) (dash "2.16.0"))
 ;; Keywords: convenience faces
 
 ;;; Commentary:
 ;;
-;;  A major mode for editing Comware router and switches configuration
-;;  file.
+;;  A major mode for editing Comware router and switch configuration
+;;  files.
 
 ;;; License:
 ;;
@@ -47,9 +47,9 @@
   (let
       ((comware-router-mode-map (make-keymap)))
     (define-key comware-router-mode-map "\C-j"   'newline-and-indent)
-    (define-key comware-router-mode-map "\C-c l v" 'comware-router-vrf-list)
-    (define-key comware-router-mode-map "\C-c l i" 'comware-router-interfaces-list)
-    (define-key comware-router-mode-map "\C-c l r" 'comware-router-route-policies-list)
+    (define-key comware-router-mode-map "\C-c C-l v" 'comware-router-vrf-list)
+    (define-key comware-router-mode-map "\C-c C-l i" 'comware-router-interfaces-list)
+    (define-key comware-router-mode-map "\C-c C-l r" 'comware-router-route-policies-list)
     comware-router-mode-map)
   "Keymap for Comware router configuration major mode")
 
@@ -181,13 +181,13 @@ and TEXT-PLIST is the matched string with faces information."
               (push `(,(point) . ,(match-string regexp-group)) matches))))))
     (reverse (-sort -compare-fn (-uniq matches)))))
 
-(defun comware-router--write-output-in-destination-buffer (texts-plists source-buffer destination-buffer)
-  "Write TEXT-PLISTS in DESTINATION-BUFFER, creating a link for
-each entry to SOURCE-BUFFER."
+(defun comware-router--write-output-in-destination-buffer (text-plists source-buffer destination-buffer)
+  "Write TEXT-PLISTS in DESTINATION-BUFFER, creating a link to
+SOURCE-BUFFER for each entry."
   (set-buffer
    (get-buffer-create destination-buffer))
-  (dolist (ele texts-plists)
-    (comware-router--insert-text-buttons ele source-buffer))
+  (dolist (ele text-plists)
+    (comware-router--insert-text-button ele source-buffer))
   (set-buffer-modified-p nil)
   (split-window-below)
   (other-window 0)
@@ -196,39 +196,41 @@ each entry to SOURCE-BUFFER."
                              (kill-this-buffer)
                              (delete-window))))
 
-(defun comware-router--insert-text-buttons (texts-plist source-buffer)
-  (insert-button (substring-no-properties (cdr texts-plist))
-                 'original-buffer source-buffer
-                 'text-plists text-plists
+(defun comware-router--insert-text-button (text-plist source-buffer)
+  "Create a text button for TEXT-PLIST with an hyperlink to the
+corresponding text position in SOURCE-BUFFER"
+  (insert-button (substring-no-properties (cdr text-plist))
+                 'source-buffer source-buffer
+                 'text-plist text-plist
                  'action (lambda (x)
                            (print (button-get x 'source-buffer))
-                           (switch-to-buffer (button-get x 'source-buffer))
-                           (goto-char (car (button-get x 'texts-plist)))))
+                           (switch-to-buffer-other-window (button-get x 'source-buffer))
+                           (goto-char (car (button-get x 'text-plist)))))
   (newline))
 
-;; Show VRFs
+;; Show VRFs in new buffer
 (defun comware-router-vrf-list ()
   "List all VRFs in a new buffer called \"*Comware: vpn-instances*\""
   (interactive)
-  (comware-router--write-output-in-new-buffer
+  (comware-router--write-output-in-destination-buffer
    (comware-router--match-regexp-in-buffer "^ip vpn-instance \\(.*\\)" 1) ; Matches
    (buffer-name (current-buffer)) ; Source buffer
    "*Comware: vpn-instances*"))   ; Destination buffer
 
-;; Show route policies
+;; Show route policies in new buffer
 (defun comware-router-route-policies-list ()
   "List all route policies in a new buffer called \"*Comware: route-policies*\""
   (interactive)
-  (comware-router--write-output-in-new-buffer
+  (comware-router--write-output-in-destination-buffer
    (comware-router--match-regexp-in-buffer "^route-policy \\([[:alnum:]][[:graph:]]*\\) \\(.*\\)" 1) ; Matches
    (buffer-name (current-buffer))  ; Source buffer
    "*Comware: route-policies*"))   ; Destination buffer
 
-;; Show interfaces
+;; Show interfaces in new buffer
 (defun comware-router-interfaces-list ()
   "List all interfaces in a new buffer called \"*Comware: interfaces*\""
   (interactive)
-  (comware-router--write-output-in-new-buffer
+  (comware-router--write-output-in-destination-buffer
    (comware-router--match-regexp-in-buffer "^interface \\(.*\\)" 1) ; Matches
    (buffer-name (current-buffer)) ; Source buffer
    "*Comware: interfaces*"))      ; Destination buffer
