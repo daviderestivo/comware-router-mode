@@ -7,7 +7,7 @@
 ;; Created: 25 Jul 2019
 ;; Version: 0.2
 ;; URL: https://github.com/daviderestivo/comware-router-mode
-;; Package-Requires: ((button) (dash "2.16.0") (emacs "24"))
+;; Package-Requires: ((dash "2.16.0") (emacs "24"))
 ;; Keywords: convenience faces
 
 ;;; Commentary:
@@ -35,8 +35,6 @@
 ;; 0.2 - 2019/08/04 - Add VRFs, interfaces, route-policies listing functions
 
 ;;; Code:
-
-(require 'button)
 (require 'dash)
 
 ;; Hook
@@ -48,10 +46,10 @@
   "Keymap for Keymap for Comware router configuration major mode")
 (progn
   (setq comware-router-mode-map (make-sparse-keymap))
-    (define-key comware-router-mode-map (kbd "C-j")       'newline-and-indent)
-    (define-key comware-router-mode-map (kbd "C-c C-l v") 'comware-router-vrf-list)
-    (define-key comware-router-mode-map (kbd "C-c C-l i") 'comware-router-interfaces-list)
-    (define-key comware-router-mode-map (kbd "C-c C-l r") 'comware-router-route-policies-list))
+  (define-key comware-router-mode-map (kbd "C-j")       'newline-and-indent)
+  (define-key comware-router-mode-map (kbd "C-c C-l v") 'comware-router-vrf-list)
+  (define-key comware-router-mode-map (kbd "C-c C-l i") 'comware-router-interfaces-list)
+  (define-key comware-router-mode-map (kbd "C-c C-l r") 'comware-router-route-policies-list))
 
 ;; Font locking definitions
 (defvar comware-router-ipadd-face 'comware-router-ipadd-face "Face for IP addresses")
@@ -182,8 +180,8 @@ and TEXT-PLIST is the matched string with faces information."
     (reverse (-sort -compare-fn (-uniq matches)))))
 
 (defun comware-router--write-output-in-destination-buffer (text-plists source-buffer destination-buffer)
-  "Write TEXT-PLISTS in DESTINATION-BUFFER, creating a link to
-SOURCE-BUFFER for each entry."
+  "Write TEXT-PLISTS in DESTINATION-BUFFER, creating an hyperlink
+to SOURCE-BUFFER for each entry."
   (set-buffer
    (get-buffer-create destination-buffer))
   (dolist (ele text-plists)
