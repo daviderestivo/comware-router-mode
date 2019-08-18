@@ -4,9 +4,10 @@
 
 ;; Author: Davide Restivo <davide.restivo@yahoo.it>
 ;; Maintainer: Davide Restivo <davide.restivo@yahoo.it>
+;; Created: 25 Jul 2019
 ;; Version: 0.2
 ;; URL: https://github.com/daviderestivo/comware-router-mode
-;; Package-Requires: ((emacs "24.3") (button) (dash "2.16.0"))
+;; Package-Requires: ((button) (dash "2.16.0") (emacs "24"))
 ;; Keywords: convenience faces
 
 ;;; Commentary:
@@ -35,23 +36,22 @@
 
 ;;; Code:
 
-
-(require 'dash)
 (require 'button)
+(require 'dash)
 
 ;; Hook
 (defvar comware-router-mode-hook nil
   "Hook called by \"comware-router-mode\"")
 
-(defvar comware-router-mode-map
-  (let
-      ((comware-router-mode-map (make-keymap)))
-    (define-key comware-router-mode-map "\C-j"   'newline-and-indent)
-    (define-key comware-router-mode-map "\C-c C-l v" 'comware-router-vrf-list)
-    (define-key comware-router-mode-map "\C-c C-l i" 'comware-router-interfaces-list)
-    (define-key comware-router-mode-map "\C-c C-l r" 'comware-router-route-policies-list)
-    comware-router-mode-map)
-  "Keymap for Comware router configuration major mode")
+;; Mode map
+(defvar comware-router-mode-map nil
+  "Keymap for Keymap for Comware router configuration major mode")
+(progn
+  (setq comware-router-mode-map (make-sparse-keymap))
+    (define-key comware-router-mode-map (kbd "C-j")       'newline-and-indent)
+    (define-key comware-router-mode-map (kbd "C-c C-l v") 'comware-router-vrf-list)
+    (define-key comware-router-mode-map (kbd "C-c C-l i") 'comware-router-interfaces-list)
+    (define-key comware-router-mode-map (kbd "C-c C-l r") 'comware-router-route-policies-list))
 
 ;; Font locking definitions
 (defvar comware-router-ipadd-face 'comware-router-ipadd-face "Face for IP addresses")
@@ -239,8 +239,8 @@ corresponding text position in SOURCE-BUFFER"
 (defvar comware-router-mode-syntax-table (make-syntax-table)
   "Syntax table for comware router mode")
 (modify-syntax-entry ?_  "w" comware-router-mode-syntax-table) ; All _'s are part of words.
-(modify-syntax-entry ?:  "w" comware-router-mode-syntax-table) ; All :'s are part of words.
 (modify-syntax-entry ?-  "w" comware-router-mode-syntax-table) ; All -'s are part of words.
+(modify-syntax-entry ?:  "w" comware-router-mode-syntax-table) ; All :'s are part of words.
 (modify-syntax-entry ?#  "<" comware-router-mode-syntax-table) ; All #'s start comments.
 (modify-syntax-entry ?\n ">" comware-router-mode-syntax-table) ; All newlines end comments.
 (modify-syntax-entry ?\r ">" comware-router-mode-syntax-table) ; All linefeeds end comments.
