@@ -23,9 +23,12 @@ directory and add the following to your `init.el`.
 ```
 
 # Keybindings
-| Key  | Function                   |
-| :--- | :---                       |
-| C-j  | comware-router-indent-line |
+| Key       | Function                           |
+| :---      | :---                               |
+| C-j       | comware-router-indent-line         |
+| C-c C-l v | comware-router-vrf-list            |
+| C-c C-l i | comware-router-interfaces-list     |
+| C-c C-l r | comware-router-route-policies-list |
 
 # License
  This file is NOT part of GNU Emacs.
