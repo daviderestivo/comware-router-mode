@@ -1,4 +1,4 @@
-;;; comware-router-mode.el --- Major mode for editing Comware configuration files
+;;; comware-router-mode.el --- Major mode for editing Comware configuration files -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2019 Davide Restivo
 
@@ -165,16 +165,16 @@ where POS is the position of the match in the original buffer,
 and TEXT-PLIST is the matched string with faces information."
   (interactive)
   (let ((matches)
-        (-compare-fn '(lambda (ele1 ele2)
-                        (equal
-                         (substring-no-properties (cdr ele1))
-                         (substring-no-properties (cdr ele2))))))
+        (-compare-fn (lambda (ele1 ele2)
+                       (equal
+                        (substring-no-properties (cdr ele1))
+                        (substring-no-properties (cdr ele2))))))
     (save-match-data
       (save-excursion
         (with-current-buffer (current-buffer)
           (save-restriction
             (widen)
-            (beginning-of-buffer)
+            (goto-char (point-min))
             (while (search-forward-regexp regexp nil t 1)
               (push `(,(point) . ,(match-string regexp-group)) matches))))))
     (reverse (-sort -compare-fn (-uniq matches)))))
