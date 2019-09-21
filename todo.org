@@ -1,5 +1,6 @@
+* TODO Add Unit tests
 * TODO Add capability to collapse sections
 Maybe based on `set-selective-display'?
-* TODO Add this comware-router-mode to MELPA once is mature enough
+* DOING Add this comware-router-mode to MELPA once is mature enough
 * DONE Add functions to list VRFs, interfaces, route-policies ...
 CLOSED: [2019-08-15 Thu 09:44]
