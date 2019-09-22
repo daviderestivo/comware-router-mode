@@ -5,7 +5,7 @@
 ;; Author: Davide Restivo <davide.restivo@yahoo.it>
 ;; Maintainer: Davide Restivo <davide.restivo@yahoo.it>
 ;; Created: 25 Jul 2019
-;; Version: 0.2
+;; Version: 0.3
 ;; URL: https://github.com/daviderestivo/comware-router-mode
 ;; Package-Requires: ((dash "2.16.0") (emacs "24"))
 ;; Keywords: convenience faces
@@ -33,6 +33,7 @@
 ;;; Change Log:
 ;; 0.1 - 2019/07/25 - First version
 ;; 0.2 - 2019/08/04 - Add VRFs, interfaces, route-policies listing functions
+;; 0.3 - 2019/09/22 - Derive comware-router-mode from prog-mode
 
 ;;; Code:
 (require 'dash)
@@ -42,14 +43,13 @@
   "Hook called by \"comware-router-mode\".")
 
 ;; Mode map
-(defvar comware-router-mode-map nil
-  "Keymap for Keymap for Comware router configuration major mode.")
-(progn
-  (setq comware-router-mode-map (make-sparse-keymap))
-  (define-key comware-router-mode-map (kbd "C-j")       'newline-and-indent)
-  (define-key comware-router-mode-map (kbd "C-c C-l v") 'comware-router-vrf-list)
-  (define-key comware-router-mode-map (kbd "C-c C-l i") 'comware-router-interfaces-list)
-  (define-key comware-router-mode-map (kbd "C-c C-l r") 'comware-router-route-policies-list))
+(defvar comware-router-mode-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map (kbd "C-j")       'newline-and-indent)
+    (define-key map (kbd "C-c C-l v") 'comware-router-vrf-list)
+    (define-key map (kbd "C-c C-l i") 'comware-router-interfaces-list)
+    (define-key map (kbd "C-c C-l r") 'comware-router-route-policies-list))
+  "Keymap for comware router mode.")
 
 ;; Font locking definitions
 (defvar comware-router-ipadd-face 'comware-router-ipadd-face "Face for IP addresses.")
@@ -232,32 +232,29 @@ and TEXT-PLIST is the matched string with faces information."
    "*Comware: interfaces*"))      ; Destination buffer
 
 ;; Custom syntax table
-(defvar comware-router-mode-syntax-table (make-syntax-table)
-  "Syntax table for comware router mode.")
-(modify-syntax-entry ?_  "w" comware-router-mode-syntax-table) ; All _'s are part of words.
-(modify-syntax-entry ?-  "w" comware-router-mode-syntax-table) ; All -'s are part of words.
-(modify-syntax-entry ?:  "w" comware-router-mode-syntax-table) ; All :'s are part of words.
-(modify-syntax-entry ?#  "<" comware-router-mode-syntax-table) ; All #'s start comments.
-(modify-syntax-entry ?\n ">" comware-router-mode-syntax-table) ; All newlines end comments.
-(modify-syntax-entry ?\r ">" comware-router-mode-syntax-table) ; All linefeeds end comments.
+(defvar comware-router-mode-syntax-table
+  (let ((table (make-syntax-table)))
+    (modify-syntax-entry ?_  "w" table) ; All _'s are part of words.
+    (modify-syntax-entry ?-  "w" table) ; All -'s are part of words.
+    (modify-syntax-entry ?:  "w" table) ; All :'s are part of words.
+    (modify-syntax-entry ?#  "<" table) ; All #'s start comments.
+    (modify-syntax-entry ?\n ">" table) ; All newlines end comments.
+    (modify-syntax-entry ?\r ">" table) ; All linefeeds end comments.
+    "Syntax table for comware router mode."))
 
 ;; Entry point
 ;;;###autoload
-(defun comware-router-mode  ()
+(define-derived-mode comware-router-mode prog-mode "Comware"
   "Major mode for editing Comware routers/switches configuration files."
-  (interactive)
-  (kill-all-local-variables)
   (set-syntax-table comware-router-mode-syntax-table)
   (use-local-map comware-router-mode-map)
-  (set (make-local-variable 'font-lock-defaults) '(comware-router-font-lock-keywords))
-  (set (make-local-variable 'indent-line-function) 'comware-router-indent-line)
-  (set (make-local-variable 'comment-start) "#")
-  (set (make-local-variable 'comment-start-skip) "\\(\\(^\\|[^\\\\\n]\\)\\(\\\\\\\\\\)*\\)#+ *")
-  (setq imenu-case-fold-search t)
-  (set (make-local-variable 'imenu-generic-expression) comware-router-imenu-expression)
+  (setq-local font-lock-defaults '(comware-router-font-lock-keywords))
+  (setq-local indent-line-function 'comware-router-indent-line)
+  (setq-local comment-start "#")
+  (setq-local comment-start-skip "\\(\\(^\\|[^\\\\\n]\\)\\(\\\\\\\\\\)*\\)#+ *")
+  (setq-local imenu-case-fold-search t)
+  (setq-local imenu-generic-expression comware-router-imenu-expression)
   (imenu-add-to-menubar "Comware")
-  (setq major-mode 'comware-router-mode
-	mode-name "Comware")
   (run-hooks comware-router-mode-hook))
 
 (add-to-list 'auto-mode-alist '("\\.cmw\\'" . comware-router-mode))
