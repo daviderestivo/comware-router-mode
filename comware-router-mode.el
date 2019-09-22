@@ -48,7 +48,8 @@
     (define-key map (kbd "C-j")       'newline-and-indent)
     (define-key map (kbd "C-c C-l v") 'comware-router-vrf-list)
     (define-key map (kbd "C-c C-l i") 'comware-router-interfaces-list)
-    (define-key map (kbd "C-c C-l r") 'comware-router-route-policies-list))
+    (define-key map (kbd "C-c C-l r") 'comware-router-route-policies-list)
+    map)
   "Keymap for comware router mode.")
 
 ;; Font locking definitions
@@ -240,7 +241,8 @@ and TEXT-PLIST is the matched string with faces information."
     (modify-syntax-entry ?#  "<" table) ; All #'s start comments.
     (modify-syntax-entry ?\n ">" table) ; All newlines end comments.
     (modify-syntax-entry ?\r ">" table) ; All linefeeds end comments.
-    "Syntax table for comware router mode."))
+    table)
+  "Syntax table for comware router mode.")
 
 ;; Entry point
 ;;;###autoload
