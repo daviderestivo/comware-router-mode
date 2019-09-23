@@ -22,6 +22,15 @@ directory and add the following to your `init.el`.
 (load-library "comware-router-mode")
 ```
 
+or if you prefer to use use-package:
+
+```
+;; An Emacs major mode for editing Comware routers and switches
+;; configuration files.
+(use-package comware-router-mode
+  :ensure t)
+```
+
 # Keybindings
 | Key       | Function                           |
 | :---      | :---                               |
