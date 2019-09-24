@@ -1,4 +1,8 @@
 # Comware Router Mode
+
+[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![MELPA](https://melpa.org/packages/comware-router-mode-badge.svg)](https://melpa.org/#/comware-router-mode)
+
 An Emacs major mode for editing Comware routers and switches
 configuration files.
 
