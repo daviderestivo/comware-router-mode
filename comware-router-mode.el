@@ -1,11 +1,11 @@
 ;;; comware-router-mode.el --- Major mode for editing Comware configuration files -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2019 Davide Restivo
+;; Copyright (C) 2020 Davide Restivo
 
 ;; Author: Davide Restivo <davide.restivo@yahoo.it>
 ;; Maintainer: Davide Restivo <davide.restivo@yahoo.it>
 ;; Created: 25 Jul 2019
-;; Version: 0.3
+;; Version: 0.4
 ;; URL: https://github.com/daviderestivo/comware-router-mode
 ;; Package-Requires: ((dash "2.16.0") (emacs "24.3"))
 ;; Keywords: convenience faces
@@ -34,6 +34,8 @@
 ;; 0.1 - 2019/07/25 - First version
 ;; 0.2 - 2019/08/04 - Add VRFs, interfaces, route-policies listing functions
 ;; 0.3 - 2019/09/22 - Derive comware-router-mode from prog-mode
+;; 0.4 - 2019/12/20 - Fix an issue with comments, update copyright year and
+;;                    improve syntax highlight
 
 ;;; Code:
 (require 'dash)
@@ -82,18 +84,32 @@
 (defconst comware-router-font-lock-keywords
   (let* (
          ;; Define categories of commands
-         (comware-router-command '("arp"
+         (comware-router-command '("aaa"
+                                   "arp"
+                                   "authentication-profile"
                                    "clock"
                                    "domain"
+                                   "drop"
+                                   "dtls"
+                                   "engine"
                                    "http"
                                    "https"
                                    "hwtacacs"
+                                   "ike proposa"
+                                   "ip host"
+                                   "ip netstream"
+                                   "ip route"
+                                   "ipsec proposal"
+                                   "ipsec p2mp-policy"
                                    "info-center"
                                    "license"
                                    "line"
                                    "local-user"
+                                   "nat"
                                    "ntp-service"
                                    "password-recovery"
+                                   "qos"
+                                   "radius-server"
                                    "return"
                                    "role"
                                    "scheduler"
@@ -102,8 +118,12 @@
                                    "snmp-agent"
                                    "ssh"
                                    "sysname"
+                                   "time-range"
+                                   "update schedule"
                                    "user-group"
-                                   "version"))
+                                   "user-interface"
+                                   "version"
+                                   "vlan"))
          (comware-router-service-command  '("acl"
                                             "address-family"
                                             "bgp"
@@ -112,6 +132,7 @@
                                             "dhcp server"
                                             "dns"
                                             "interface"
+                                            "ip community-filter"
                                             "ip community-list"
                                             "ip prefix-list"
                                             "ip route-static"
@@ -120,7 +141,12 @@
                                             "ospf"
                                             "rip"
                                             "route-policy"
+                                            "smart-policy-route"
+                                            "traffic behavior"
+                                            "traffic classifier"
+                                            "traffic policy"
                                             "rtm"
+                                            "wlan ac"
                                             "vsi"))
          ;; Generate regexp strings for each category of commands
          (comware-router-command-regexp         (concat "^[[:space:]]*"
@@ -238,6 +264,7 @@ and TEXT-PLIST is the matched string with faces information."
     (modify-syntax-entry ?_  "w" table) ; All _'s are part of words.
     (modify-syntax-entry ?-  "w" table) ; All -'s are part of words.
     (modify-syntax-entry ?:  "w" table) ; All :'s are part of words.
+    (modify-syntax-entry ?\" "w" table) ; All "'s are part of words.
     (modify-syntax-entry ?#  "<" table) ; All #'s start comments.
     (modify-syntax-entry ?\n ">" table) ; All newlines end comments.
     (modify-syntax-entry ?\r ">" table) ; All linefeeds end comments.
