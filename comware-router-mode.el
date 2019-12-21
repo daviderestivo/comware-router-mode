@@ -5,7 +5,7 @@
 ;; Author: Davide Restivo <davide.restivo@yahoo.it>
 ;; Maintainer: Davide Restivo <davide.restivo@yahoo.it>
 ;; Created: 25 Jul 2019
-;; Version: 0.4
+;; Version: 0.5
 ;; URL: https://github.com/daviderestivo/comware-router-mode
 ;; Package-Requires: ((dash "2.16.0") (emacs "24.3"))
 ;; Keywords: convenience faces
@@ -36,6 +36,7 @@
 ;; 0.3 - 2019/09/22 - Derive comware-router-mode from prog-mode
 ;; 0.4 - 2019/12/20 - Fix an issue with comments, update copyright year and
 ;;                    improve syntax highlight
+;; 0.5 - 2019/12/21 - Add code folding support
 
 ;;; Code:
 (require 'dash)
@@ -51,6 +52,7 @@
     (define-key map (kbd "C-c C-l v") 'comware-router-vrf-list)
     (define-key map (kbd "C-c C-l i") 'comware-router-interfaces-list)
     (define-key map (kbd "C-c C-l r") 'comware-router-route-policies-list)
+    (define-key map (kbd "<tab>")     'comware-router-code-folding-toggle)
     map)
   "Keymap for comware router mode.")
 
@@ -257,6 +259,17 @@ and TEXT-PLIST is the matched string with faces information."
    (comware-router--match-regexp-in-buffer "^interface \\(.*\\)" 1) ; Matches
    (buffer-name (current-buffer)) ; Source buffer
    "*Comware: interfaces*"))      ; Destination buffer
+
+;; Fold/unfold code
+(defun comware-router-code-folding-toggle (&optional level)
+"Fold text indented same of more than the cursor.
+If level is set, set the indent level to LEVEL.
+If 'selective-display' is already set to LEVEL, clicking
+<tab> again will unset 'selective-display' by setting it to 0."
+  (interactive "P")
+  (if (eq selective-display (1+ (current-column)))
+      (set-selective-display 0)
+    (set-selective-display (or level (1+ (current-column))))))
 
 ;; Custom syntax table
 (defvar comware-router-mode-syntax-table

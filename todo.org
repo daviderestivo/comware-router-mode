@@ -1,5 +1,6 @@
 * TODO Add Unit tests
-* TODO Add capability to collapse sections
+* DONE Add capability to collapse sections
+CLOSED: [2019-12-21 Sat 09:37]
 Maybe based on `set-selective-display'?
 * DONE Add this comware-router-mode to MELPA once is mature enough
 CLOSED: [2019-09-23 Thu 16:25]

@@ -43,6 +43,7 @@ or if you prefer to use use-package:
 | C-c C-l v | comware-router-vrf-list            |
 | C-c C-l i | comware-router-interfaces-list     |
 | C-c C-l r | comware-router-route-policies-list |
+| <tab>     | comware-router-code-folding-toggle |
 
 # License
  This file is NOT part of GNU Emacs.
