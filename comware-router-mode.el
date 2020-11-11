@@ -37,6 +37,7 @@
 ;; 0.4 - 2019/12/20 - Fix an issue with comments, update copyright year and
 ;;                    improve syntax highlight
 ;; 0.5 - 2019/12/21 - Add code folding support
+;; 0.6 - 2020/11/11 - Add more router- and service-commands
 
 ;;; Code:
 (require 'dash)
@@ -110,6 +111,8 @@
                                    "nat"
                                    "ntp-service"
                                    "password-recovery"
+                                   "public-key"
+                                   "public-key-code"
                                    "qos"
                                    "radius-server"
                                    "return"
@@ -140,16 +143,19 @@
                                             "ip route-static"
                                             "ip vpn-instance"
                                             "nqa"
+                                            "object-group"
                                             "ospf"
                                             "rip"
                                             "route-policy"
+                                            "security-zone"
                                             "smart-policy-route"
                                             "traffic behavior"
                                             "traffic classifier"
                                             "traffic policy"
                                             "rtm"
                                             "wlan ac"
-                                            "vsi"))
+                                            "vsi"
+                                            "zone-pair"))
          ;; Generate regexp strings for each category of commands
          (comware-router-command-regexp         (concat "^[[:space:]]*"
                                                         (regexp-opt comware-router-command 'word)
