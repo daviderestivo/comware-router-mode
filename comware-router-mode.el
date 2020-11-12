@@ -144,6 +144,7 @@
                                             "ip vpn-instance"
                                             "nqa"
                                             "object-group"
+                                            "object-policy"
                                             "ospf"
                                             "rip"
                                             "route-policy"
