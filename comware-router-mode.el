@@ -1,6 +1,6 @@
 ;;; comware-router-mode.el --- Major mode for editing Comware configuration files -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2019-2020 Davide Restivo
+;; Copyright (C) 2019-2021 Davide Restivo
 
 ;; Author: Davide Restivo <davide.restivo@yahoo.it>
 ;; Maintainer: Davide Restivo <davide.restivo@yahoo.it>
